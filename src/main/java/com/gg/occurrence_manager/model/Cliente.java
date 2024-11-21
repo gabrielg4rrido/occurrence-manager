@@ -3,6 +3,7 @@ package com.gg.occurrence_manager.model;
 import lombok.Data;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
@@ -15,12 +16,15 @@ public class Cliente {
     private Long codigo;
 
     @Column(name = "nme_cliente")
+    @NotNull
     private String nome;
 
     @Column(name = "dta_nascimento")
+    @NotNull
     private LocalDate dataNascimento;
 
     @Column(name = "nro_cpf", unique = true)
+    @NotNull
     private String cpf;
 
     @Column(name = "dta_criacao" )

@@ -1,5 +1,6 @@
 package com.gg.occurrence_manager.model;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import jakarta.persistence.*;
@@ -17,9 +18,11 @@ public class FotoOcorrencia {
 
     @ManyToOne
     @JoinColumn(name = "cod_ocorrencia")
+    @NotNull
     private Ocorrencia ocorrencia;
 
     @Column(name = "dta_criacao")
+    @NotNull
     private LocalDate dataCriacao;
 
     @Column(name = "dsc_path_bucket")

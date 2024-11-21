@@ -1,6 +1,7 @@
 package com.gg.occurrence_manager.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -16,13 +17,16 @@ public class Ocorrencia {
 
     @ManyToOne
     @JoinColumn(name = "cod_endereco")
+    @NotNull
     private Endereco endereco;
 
     @ManyToOne
     @JoinColumn(name = "cod_cliente")
+    @NotNull
     private Cliente cliente;
 
     @Column(name = "dta_ocorrencia")
+    @NotNull
     private LocalDate dataOcorrencia;
 
     @Enumerated(EnumType.STRING)
