@@ -1,14 +1,18 @@
 package com.gg.occurrence_manager.model;
 
+import com.gg.occurrence_manager.model.dto.OcorrenciaDTO;
 import com.gg.occurrence_manager.model.enums.StatusOcorrencia;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "ocorrencia")
 @Data
+@NoArgsConstructor
 public class Ocorrencia {
 
     @Id
@@ -34,4 +38,21 @@ public class Ocorrencia {
     @Column(name = "sta_ocorrencia")
     private StatusOcorrencia statusOcorrencia;
 
+    public Ocorrencia(Endereco endereco, Cliente cliente, LocalDate dataOcorrencia) {
+        this.endereco = endereco;
+        this.cliente = cliente;
+        this.dataOcorrencia = dataOcorrencia;
+        this.statusOcorrencia = StatusOcorrencia.ABERTA;
+    }
+
+    public Ocorrencia(OcorrenciaDTO dto) {
+        this.codigo = dto.codigo();
+        this.dataOcorrencia = dto.dataOcorrencia();
+        this.statusOcorrencia = StatusOcorrencia.ABERTA;
+    }
+
+    public void atualizar(OcorrenciaDTO dto) {
+        this.dataOcorrencia = dto.dataOcorrencia();
+        this.statusOcorrencia = StatusOcorrencia.ABERTA;
+    }
 }

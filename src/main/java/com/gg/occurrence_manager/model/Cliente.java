@@ -11,6 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "cliente")
 @Data
 @NoArgsConstructor
 public class Cliente {
