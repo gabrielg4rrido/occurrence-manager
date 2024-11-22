@@ -1,7 +1,9 @@
 package com.gg.occurrence_manager.controller;
 
+import com.gg.occurrence_manager.infra.security.TokenService;
 import com.gg.occurrence_manager.model.Usuario;
 import com.gg.occurrence_manager.model.dto.AuthDTO;
+import com.gg.occurrence_manager.model.dto.LoginResponseDTO;
 import com.gg.occurrence_manager.model.dto.RegisterDTO;
 import com.gg.occurrence_manager.repository.UsuarioRepository;
 import jakarta.validation.Valid;
@@ -25,12 +27,16 @@ public class AuthController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private TokenService tokenService;
+
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthDTO authDTO) {
         var usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(authDTO.login(), authDTO.password());
         var auth = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
-        return ResponseEntity.ok().build();
+        var token = tokenService.generateToken((Usuario) auth.getPrincipal());
+        return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
     @PostMapping("/register")
