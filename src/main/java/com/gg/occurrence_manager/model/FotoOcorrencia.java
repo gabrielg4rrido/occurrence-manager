@@ -18,11 +18,11 @@ public class FotoOcorrencia {
     private Long codigo;
 
     @ManyToOne
-    @JoinColumn(name = "cod_ocorrencia")
+    @JoinColumn(name = "cod_ocorrencia", nullable = false)
     @NotNull
     private Ocorrencia ocorrencia;
 
-    @Column(name = "dta_criacao")
+    @Column(name = "dta_criacao", nullable = false)
     @NotNull
     private LocalDate dataCriacao;
 

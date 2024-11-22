@@ -1,11 +1,9 @@
 package com.gg.occurrence_manager.model;
 
-import com.gg.occurrence_manager.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -20,23 +18,20 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "login", nullable = false)
     private String login;
-    private String password;
-    private Role role;
 
-    public Usuario(String login, String encodedPassword, Role role) {
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    public Usuario(String login, String encodedPassword) {
         this.login = login;
         this.password = encodedPassword;
-        this.role = role;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (Role.ADMIN.equals(this.role)) {
-            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"),
-                    new SimpleGrantedAuthority("ROLE_USER"));
-        }
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return List.of();
     }
 
     @Override

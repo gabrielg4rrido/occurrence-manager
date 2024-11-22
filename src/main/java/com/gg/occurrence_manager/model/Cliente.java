@@ -4,6 +4,8 @@ import lombok.Data;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.LocalDate;
 
 @Entity
@@ -15,18 +17,19 @@ public class Cliente {
     @Column(name = "cod_cliente")
     private Long codigo;
 
-    @Column(name = "nme_cliente")
+    @Column(name = "nme_cliente", nullable = false)
     @NotNull
     private String nome;
 
-    @Column(name = "dta_nascimento")
+    @Column(name = "dta_nascimento", nullable = false)
     @NotNull
     private LocalDate dataNascimento;
 
-    @Column(name = "nro_cpf", unique = true)
+    @Column(name = "nro_cpf", nullable = false, unique = true)
     @NotNull
     private String cpf;
 
     @Column(name = "dta_criacao" )
+    @CreationTimestamp
     private LocalDate dataCriacao;
 }
