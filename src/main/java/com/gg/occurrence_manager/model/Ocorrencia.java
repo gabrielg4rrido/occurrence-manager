@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "ocorrencia")
@@ -38,16 +40,13 @@ public class Ocorrencia {
     @Column(name = "sta_ocorrencia")
     private StatusOcorrencia statusOcorrencia;
 
+    @OneToMany(mappedBy = "ocorrencia", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FotoOcorrencia> fotos = new ArrayList<>();
+
     public Ocorrencia(Endereco endereco, Cliente cliente, LocalDate dataOcorrencia) {
         this.endereco = endereco;
         this.cliente = cliente;
         this.dataOcorrencia = dataOcorrencia;
-        this.statusOcorrencia = StatusOcorrencia.ABERTA;
-    }
-
-    public Ocorrencia(OcorrenciaDTO dto) {
-        this.codigo = dto.codigo();
-        this.dataOcorrencia = dto.dataOcorrencia();
         this.statusOcorrencia = StatusOcorrencia.ABERTA;
     }
 

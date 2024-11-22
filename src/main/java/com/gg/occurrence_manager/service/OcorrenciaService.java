@@ -3,12 +3,14 @@ package com.gg.occurrence_manager.service;
 import com.gg.occurrence_manager.exception.CustomBadRequestException;
 import com.gg.occurrence_manager.model.Cliente;
 import com.gg.occurrence_manager.model.Endereco;
+import com.gg.occurrence_manager.model.FotoOcorrencia;
 import com.gg.occurrence_manager.model.Ocorrencia;
 import com.gg.occurrence_manager.model.dto.CadastroOcorrenciaDTO;
 import com.gg.occurrence_manager.model.dto.OcorrenciaDTO;
 import com.gg.occurrence_manager.model.enums.StatusOcorrencia;
 import com.gg.occurrence_manager.repository.ClienteRepository;
 import com.gg.occurrence_manager.repository.EnderecoRepository;
+import com.gg.occurrence_manager.repository.FotoOcorrenciaRepository;
 import com.gg.occurrence_manager.repository.OcorrenciaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -16,6 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class OcorrenciaService {
@@ -29,8 +35,14 @@ public class OcorrenciaService {
     @Autowired
     private ClienteRepository clienteRepository;
 
+    @Autowired
+    private FotoOcorrenciaRepository fotoOcorrenciaRepository;
+
+    @Autowired
+    private MinioService minioService;
+
     @Transactional
-    public OcorrenciaDTO cadastrarOcorrencia(CadastroOcorrenciaDTO cadastroDTO) {
+    public OcorrenciaDTO cadastrarOcorrencia(CadastroOcorrenciaDTO cadastroDTO, List<MultipartFile> evidencias) {
         Endereco endereco = enderecoRepository
                 .findByCepAndLogradouroAndBairroAndCidadeAndEstado(
                         cadastroDTO.endereco().cep(),
@@ -43,7 +55,7 @@ public class OcorrenciaService {
         Cliente cliente = clienteRepository.findByNomeAndCpf(cadastroDTO.cliente().nome(), cadastroDTO.cliente().cpf())
                 .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado"));
 
-        //List<String> paths = minioService.uploadFiles(cadastroDTO.evidencias());
+        List<String> paths = minioService.uploadFiles(evidencias);
 
         Ocorrencia ocorrencia = new Ocorrencia(
                 endereco,
@@ -53,7 +65,11 @@ public class OcorrenciaService {
 
         Ocorrencia ocorrenciaSalva = ocorrenciaRepository.save(ocorrencia);
 
-        //paths.forEach(path -> ocorrencia.addFoto(new FotoOcorrencia(path)));
+        paths.forEach(path -> {
+            String hash = gerarHashParaArquivo(path);
+            FotoOcorrencia foto = new FotoOcorrencia(ocorrenciaSalva, path, hash);
+            fotoOcorrenciaRepository.save(foto);
+        });
 
         return new OcorrenciaDTO(ocorrenciaSalva);
     }
@@ -92,5 +108,9 @@ public class OcorrenciaService {
 
     public void deletarOcorrencia(Long id) {
         ocorrenciaRepository.deleteById(id);
+    }
+
+    private String gerarHashParaArquivo(String filePath) {
+        return UUID.randomUUID().toString();
     }
 }

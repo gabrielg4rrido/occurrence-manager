@@ -4,12 +4,14 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "fotoocorrencia")
 @Data
+@NoArgsConstructor
 public class FotoOcorrencia {
 
     @Id
@@ -32,5 +34,10 @@ public class FotoOcorrencia {
     @Column(name = "dsc_hash")
     private String hash;
 
-
+    public FotoOcorrencia(Ocorrencia ocorrencia, String pathBucket, String hash) {
+        this.ocorrencia = ocorrencia;
+        this.dataCriacao = LocalDate.now();
+        this.pathBucket = pathBucket;
+        this.hash = hash;
+    }
 }
