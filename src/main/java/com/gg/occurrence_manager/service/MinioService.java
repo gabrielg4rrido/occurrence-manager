@@ -22,12 +22,15 @@ public class MinioService {
     @Value("${minio.bucket-name}")
     private String bucketName;
 
+    @Value("${minio.url}")
+    private String minioUrl;
+
     public MinioService(MinioClient minioClient) {
         this.minioClient = minioClient;
     }
 
     public List<String> uploadFiles(List<MultipartFile> files) {
-        List<String> paths = new ArrayList<>();
+        List<String> publicUrls = new ArrayList<>();
         for (MultipartFile file : files) {
             String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
             try {
@@ -37,11 +40,14 @@ public class MinioService {
                         .stream(file.getInputStream(), file.getSize(), -1)
                         .contentType(file.getContentType())
                         .build());
-                paths.add(fileName);
+
+                String publicUrl = String.format("%s/%s/%s", minioUrl, bucketName, fileName);
+                publicUrls.add(publicUrl);
+
             } catch (MinioException | IOException | InvalidKeyException | NoSuchAlgorithmException e) {
                 throw new RuntimeException("Erro ao fazer upload para o MinIO: " + e.getMessage(), e);
             }
         }
-        return paths;
+        return publicUrls;
     }
 }

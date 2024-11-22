@@ -50,7 +50,7 @@ public class OcorrenciaService {
                         cadastroDTO.endereco().bairro(),
                         cadastroDTO.endereco().cidade(),
                         cadastroDTO.endereco().estado())
-                .orElseGet(() -> enderecoRepository.save(new Endereco(cadastroDTO.endereco())));
+                .orElseThrow(() -> new EntityNotFoundException("Endereço não encontrado"));
 
         Cliente cliente = clienteRepository.findByNomeAndCpf(cadastroDTO.cliente().nome(), cadastroDTO.cliente().cpf())
                 .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado"));
