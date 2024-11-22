@@ -1,11 +1,14 @@
 package com.gg.occurrence_manager.model;
 
+import com.gg.occurrence_manager.model.dto.EnderecoDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class Endereco {
 
     @Id
@@ -33,4 +36,19 @@ public class Endereco {
     @NotNull
     private String estado;
 
+    public Endereco(EnderecoDTO dto) {
+        this.logradouro = dto.logradouro();
+        this.bairro = dto.bairro();
+        this.cidade = dto.cidade();
+        this.estado = dto.estado();
+        this.cep = dto.cep();
+    }
+
+    public void atualizar(EnderecoDTO dto) {
+        this.logradouro = dto.logradouro();
+        this.bairro = dto.bairro();
+        this.cidade = dto.cidade();
+        this.estado = dto.estado();
+        this.cep = dto.cep();
+    }
 }
