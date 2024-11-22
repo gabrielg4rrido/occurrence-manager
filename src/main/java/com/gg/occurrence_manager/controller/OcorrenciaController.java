@@ -4,6 +4,8 @@ import com.gg.occurrence_manager.model.dto.CadastroOcorrenciaDTO;
 import com.gg.occurrence_manager.model.dto.OcorrenciaDTO;
 import com.gg.occurrence_manager.service.OcorrenciaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +26,11 @@ public class OcorrenciaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<OcorrenciaDTO>> listarOcorrencias() {
-        List<OcorrenciaDTO> ocorrencias = ocorrenciaService.listarOcorrencias();
+    public ResponseEntity<Page<OcorrenciaDTO>> listarOcorrencias(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<OcorrenciaDTO> ocorrencias = ocorrenciaService.listarOcorrencias(pageRequest);
         return ResponseEntity.ok(ocorrencias);
     }
 
@@ -45,5 +50,11 @@ public class OcorrenciaController {
     public ResponseEntity<Void> deletarOcorrencia(@PathVariable Long id) {
         ocorrenciaService.deletarOcorrencia(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/finalizar")
+    public ResponseEntity<OcorrenciaDTO> finalizarOcorrencia(@PathVariable Long id) {
+        OcorrenciaDTO ocorrenciaFinalizada = ocorrenciaService.finalizarOcorrencia(id);
+        return ResponseEntity.ok(ocorrenciaFinalizada);
     }
 }
