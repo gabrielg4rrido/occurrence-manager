@@ -3,12 +3,13 @@ package com.gg.occurrence_manager.controller;
 import com.gg.occurrence_manager.model.dto.EnderecoDTO;
 import com.gg.occurrence_manager.service.EnderecoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/endereco")
@@ -17,24 +18,27 @@ public class EnderecoController {
     @Autowired
     private EnderecoService enderecoService;
 
-    @PostMapping
-    public ResponseEntity<EnderecoDTO> criarEndereco(@RequestBody EnderecoDTO enderecoDTO) {
-        EnderecoDTO enderecoCriado = enderecoService.criarEndereco(enderecoDTO);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(enderecoCriado.codigo()).toUri();
-
-        return ResponseEntity.created(uri).build();
-    }
-
     @GetMapping
-    public ResponseEntity<List<EnderecoDTO>> listarEnderecos() {
-        List<EnderecoDTO> enderecos = enderecoService.listarEnderecos();
-        return ResponseEntity.ok().body(enderecos);
+    public ResponseEntity<Page<EnderecoDTO>> listarEnderecos(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<EnderecoDTO> enderecos = enderecoService.listarEnderecos(pageRequest);
+        return ResponseEntity.ok(enderecos);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<EnderecoDTO> obterEndereco(@PathVariable Long id) {
         EnderecoDTO endereco = enderecoService.obterEndereco(id);
         return ResponseEntity.ok().body(endereco);
+    }
+
+    @PostMapping
+    public ResponseEntity<EnderecoDTO> criarEndereco(@RequestBody EnderecoDTO enderecoDTO) {
+        EnderecoDTO enderecoCriado = enderecoService.criarEndereco(enderecoDTO);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(enderecoCriado.codigo()).toUri();
+
+        return ResponseEntity.created(uri).build();
     }
 
     @PutMapping("/{id}")

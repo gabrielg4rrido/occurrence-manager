@@ -6,10 +6,9 @@ import com.gg.occurrence_manager.model.dto.ClienteDTO;
 import com.gg.occurrence_manager.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ClienteService {
@@ -31,11 +30,9 @@ public class ClienteService {
         }
     }
 
-    public List<ClienteDTO> listarClientes() {
-        return clienteRepository.findAll()
-                .stream()
-                .map(ClienteDTO::new)
-                .collect(Collectors.toList());
+    public Page<ClienteDTO> listarClientes(PageRequest pageRequest) {
+        return clienteRepository.findAll(pageRequest)
+                .map(ClienteDTO::new);
     }
 
     public ClienteDTO obterCliente(Long id) {

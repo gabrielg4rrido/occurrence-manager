@@ -10,20 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/ocorrencia")
 public class OcorrenciaController {
 
     @Autowired
     private OcorrenciaService ocorrenciaService;
-
-    @PostMapping
-    public ResponseEntity<OcorrenciaDTO> criarOcorrencia(@RequestBody CadastroOcorrenciaDTO cadastroOcorrenciaDTO) {
-        OcorrenciaDTO ocorrenciaCriada = ocorrenciaService.cadastrarOcorrencia(cadastroOcorrenciaDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(ocorrenciaCriada);
-    }
 
     @GetMapping
     public ResponseEntity<Page<OcorrenciaDTO>> listarOcorrencias(
@@ -38,6 +30,12 @@ public class OcorrenciaController {
     public ResponseEntity<OcorrenciaDTO> obterOcorrencia(@PathVariable Long id) {
         OcorrenciaDTO ocorrencia = ocorrenciaService.obterOcorrencia(id);
         return ResponseEntity.ok(ocorrencia);
+    }
+
+    @PostMapping
+    public ResponseEntity<OcorrenciaDTO> criarOcorrencia(@RequestBody CadastroOcorrenciaDTO cadastroOcorrenciaDTO) {
+        OcorrenciaDTO ocorrenciaCriada = ocorrenciaService.cadastrarOcorrencia(cadastroOcorrenciaDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ocorrenciaCriada);
     }
 
     @PutMapping("/{id}")

@@ -4,10 +4,9 @@ import com.gg.occurrence_manager.model.Endereco;
 import com.gg.occurrence_manager.model.dto.EnderecoDTO;
 import com.gg.occurrence_manager.repository.EnderecoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class EnderecoService {
@@ -21,11 +20,9 @@ public class EnderecoService {
         return new EnderecoDTO(endereco);
     }
 
-    public List<EnderecoDTO> listarEnderecos() {
-        return enderecoRepository.findAll()
-                .stream()
-                .map(EnderecoDTO::new)
-                .collect(Collectors.toList());
+    public Page<EnderecoDTO> listarEnderecos(PageRequest pageRequest) {
+        return enderecoRepository.findAll(pageRequest)
+                .map(EnderecoDTO::new);
     }
 
     public EnderecoDTO obterEndereco(Long id) {

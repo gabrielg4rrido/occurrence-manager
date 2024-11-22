@@ -11,15 +11,11 @@ import com.gg.occurrence_manager.repository.ClienteRepository;
 import com.gg.occurrence_manager.repository.EnderecoRepository;
 import com.gg.occurrence_manager.repository.OcorrenciaRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Status;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class OcorrenciaService {
