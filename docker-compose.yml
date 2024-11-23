@@ -19,6 +19,7 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
+      SECURITY_TOKEN_SECRET_KEY: secretkey
 
   postgres:
     image: postgres:latest
