@@ -9,9 +9,9 @@ public record EnderecoDTO(Long codigo, String logradouro, String bairro, String 
                 endereco.getCodigo(),
                 endereco.getLogradouro(),
                 endereco.getBairro(),
+                endereco.getCep(),
                 endereco.getCidade(),
-                endereco.getEstado(),
-                endereco.getCep()
+                endereco.getEstado()
         );
     }
 }

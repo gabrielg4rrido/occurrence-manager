@@ -18,9 +18,11 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -78,10 +80,35 @@ public class OcorrenciaService {
         return new OcorrenciaDTO(ocorrenciaSalva, fotos);
     }
 
-    public Page<OcorrenciaDTO> listarOcorrencias(PageRequest pageRequest) {
-        return ocorrenciaRepository.findAll(pageRequest)
+    public Page<OcorrenciaDTO> listarOcorrencias(
+            String nomeCliente, String cpf, LocalDate dataOcorrencia, String cidade, PageRequest pageRequest) {
+
+        Specification<Ocorrencia> spec = Specification.where(null);
+
+        if (nomeCliente != null && !nomeCliente.isEmpty()) {
+            spec = spec.and((root, query, cb) ->
+                    cb.like(cb.lower(root.get("cliente").get("nome")), "%" + nomeCliente.toLowerCase() + "%"));
+        }
+
+        if (cpf != null && !cpf.isEmpty()) {
+            spec = spec.and((root, query, cb) ->
+                    cb.equal(root.get("cliente").get("cpf"), cpf));
+        }
+
+        if (dataOcorrencia != null) {
+            spec = spec.and((root, query, cb) ->
+                    cb.equal(root.get("dataOcorrencia"), dataOcorrencia));
+        }
+
+        if (cidade != null && !cidade.isEmpty()) {
+            spec = spec.and((root, query, cb) ->
+                    cb.like(cb.lower(root.get("endereco").get("cidade")), "%" + cidade.toLowerCase() + "%"));
+        }
+
+        return ocorrenciaRepository.findAll(spec, pageRequest)
                 .map(OcorrenciaDTO::new);
     }
+
 
     public OcorrenciaDTO obterOcorrencia(Long id) {
         Ocorrencia ocorrencia = ocorrenciaRepository.findById(id)
