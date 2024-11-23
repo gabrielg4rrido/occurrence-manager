@@ -2,6 +2,7 @@ package com.gg.occurrence_manager.controller;
 
 import com.gg.occurrence_manager.model.dto.EnderecoDTO;
 import com.gg.occurrence_manager.service.EnderecoService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +14,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/endereco")
+@SecurityRequirement(name = "bearerAuth")
 public class EnderecoController {
 
     @Autowired

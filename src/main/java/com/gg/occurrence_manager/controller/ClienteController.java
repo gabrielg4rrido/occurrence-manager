@@ -3,6 +3,7 @@ package com.gg.occurrence_manager.controller;
 import com.gg.occurrence_manager.model.Cliente;
 import com.gg.occurrence_manager.model.dto.ClienteDTO;
 import com.gg.occurrence_manager.service.ClienteService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +15,8 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/cliente")
+@SecurityRequirement(name = "bearerAuth")
+
 public class ClienteController {
 
     @Autowired
