@@ -1,17 +1,19 @@
 package com.gg.occurrence_manager.model.dto;
 
 import com.gg.occurrence_manager.model.Ocorrencia;
+import com.gg.occurrence_manager.model.enums.StatusOcorrencia;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public record OcorrenciaDTO(Long codigo, EnderecoDTO endereco, ClienteDTO cliente, LocalDate dataOcorrencia, List<FotoOcorrenciaDTO> fotos) {
+public record OcorrenciaDTO(Long codigo, EnderecoDTO endereco, ClienteDTO cliente, LocalDate dataOcorrencia, StatusOcorrencia statusOcorrencia, List<FotoOcorrenciaDTO> fotos) {
     public OcorrenciaDTO(Ocorrencia ocorrencia) {
         this(
                 ocorrencia.getCodigo(),
                 new EnderecoDTO(ocorrencia.getEndereco()),
                 new ClienteDTO(ocorrencia.getCliente()),
                 ocorrencia.getDataOcorrencia(),
+                ocorrencia.getStatusOcorrencia(),
                 ocorrencia.getFotos().stream()
                         .map(FotoOcorrenciaDTO::new)
                         .toList()
@@ -24,6 +26,7 @@ public record OcorrenciaDTO(Long codigo, EnderecoDTO endereco, ClienteDTO client
                 new EnderecoDTO(ocorrencia.getEndereco()),
                 new ClienteDTO(ocorrencia.getCliente()),
                 ocorrencia.getDataOcorrencia(),
+                ocorrencia.getStatusOcorrencia(),
                 fotos
         );
     }
