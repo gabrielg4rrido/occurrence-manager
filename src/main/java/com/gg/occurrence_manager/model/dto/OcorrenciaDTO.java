@@ -17,4 +17,14 @@ public record OcorrenciaDTO(Long codigo, EnderecoDTO endereco, ClienteDTO client
                         .toList()
         );
     }
+
+    public OcorrenciaDTO(Ocorrencia ocorrencia, List<FotoOcorrenciaDTO> fotos) {
+        this(
+                ocorrencia.getCodigo(),
+                new EnderecoDTO(ocorrencia.getEndereco()),
+                new ClienteDTO(ocorrencia.getCliente()),
+                ocorrencia.getDataOcorrencia(),
+                fotos
+        );
+    }
 }

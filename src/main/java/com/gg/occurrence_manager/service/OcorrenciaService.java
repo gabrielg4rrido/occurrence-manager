@@ -6,6 +6,7 @@ import com.gg.occurrence_manager.model.Endereco;
 import com.gg.occurrence_manager.model.FotoOcorrencia;
 import com.gg.occurrence_manager.model.Ocorrencia;
 import com.gg.occurrence_manager.model.dto.CadastroOcorrenciaDTO;
+import com.gg.occurrence_manager.model.dto.FotoOcorrenciaDTO;
 import com.gg.occurrence_manager.model.dto.OcorrenciaDTO;
 import com.gg.occurrence_manager.model.enums.StatusOcorrencia;
 import com.gg.occurrence_manager.repository.ClienteRepository;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -65,13 +67,15 @@ public class OcorrenciaService {
 
         Ocorrencia ocorrenciaSalva = ocorrenciaRepository.save(ocorrencia);
 
+        List<FotoOcorrenciaDTO> fotos = new ArrayList<>();
         paths.forEach(path -> {
-            String hash = gerarHashParaArquivo(path);
+            String hash = gerarHashParaArquivo();
             FotoOcorrencia foto = new FotoOcorrencia(ocorrenciaSalva, path, hash);
             fotoOcorrenciaRepository.save(foto);
+            fotos.add(new FotoOcorrenciaDTO(foto));
         });
 
-        return new OcorrenciaDTO(ocorrenciaSalva);
+        return new OcorrenciaDTO(ocorrenciaSalva, fotos);
     }
 
     public Page<OcorrenciaDTO> listarOcorrencias(PageRequest pageRequest) {
@@ -110,7 +114,7 @@ public class OcorrenciaService {
         ocorrenciaRepository.deleteById(id);
     }
 
-    private String gerarHashParaArquivo(String filePath) {
+    private String gerarHashParaArquivo() {
         return UUID.randomUUID().toString();
     }
 }
