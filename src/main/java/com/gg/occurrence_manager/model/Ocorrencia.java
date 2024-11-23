@@ -47,11 +47,11 @@ public class Ocorrencia {
         this.endereco = endereco;
         this.cliente = cliente;
         this.dataOcorrencia = dataOcorrencia;
-        this.statusOcorrencia = StatusOcorrencia.ABERTA;
+        this.statusOcorrencia = StatusOcorrencia.ATIVA;
     }
 
     public void atualizar(OcorrenciaDTO dto) {
         this.dataOcorrencia = dto.dataOcorrencia();
-        this.statusOcorrencia = StatusOcorrencia.ABERTA;
+        this.statusOcorrencia = StatusOcorrencia.ATIVA;
     }
 }

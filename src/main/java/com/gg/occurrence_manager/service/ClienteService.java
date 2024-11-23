@@ -17,17 +17,9 @@ public class ClienteService {
     private ClienteRepository clienteRepository;
 
     public ClienteDTO criarCliente(ClienteDTO clienteDTO) {
-        try {
-            Cliente cliente = new Cliente(clienteDTO);
-            cliente = clienteRepository.save(cliente);
-            return new ClienteDTO(cliente);
-        } catch (DataIntegrityViolationException ex) {
-            throw new CustomBadRequestException("Erro: Dados inválidos ou em conflito. Verifique os campos enviados.");
-        } catch (IllegalArgumentException ex) {
-            throw new CustomBadRequestException("Erro: Argumento inválido fornecido.");
-        } catch (Exception ex) {
-            throw new RuntimeException("Erro inesperado ao criar o cliente.");
-        }
+        Cliente cliente = new Cliente(clienteDTO);
+        cliente = clienteRepository.save(cliente);
+        return new ClienteDTO(cliente);
     }
 
     public Page<ClienteDTO> listarClientes(PageRequest pageRequest) {
