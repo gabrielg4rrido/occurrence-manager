@@ -4,6 +4,7 @@ import com.gg.occurrence_manager.model.dto.EnderecoDTO;
 import com.gg.occurrence_manager.service.EnderecoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,7 +41,7 @@ public class EnderecoController {
 
     @PostMapping
     @Operation(summary = "Cadastra um endereço no sistema")
-    public ResponseEntity<EnderecoDTO> criarEndereco(@RequestBody EnderecoDTO enderecoDTO) {
+    public ResponseEntity<EnderecoDTO> criarEndereco(@RequestBody @Valid EnderecoDTO enderecoDTO) {
         EnderecoDTO enderecoCriado = enderecoService.criarEndereco(enderecoDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(enderecoCriado.codigo()).toUri();
 
@@ -49,7 +50,7 @@ public class EnderecoController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Atualiza um endereço no sistema")
-    public ResponseEntity<EnderecoDTO> atualizarEndereco(@PathVariable Long id, @RequestBody EnderecoDTO enderecoDTO) {
+    public ResponseEntity<EnderecoDTO> atualizarEndereco(@PathVariable Long id, @RequestBody @Valid EnderecoDTO enderecoDTO) {
         EnderecoDTO enderecoAtualizado = enderecoService.atualizarEndereco(id, enderecoDTO);
         return ResponseEntity.ok().body(enderecoAtualizado);
     }

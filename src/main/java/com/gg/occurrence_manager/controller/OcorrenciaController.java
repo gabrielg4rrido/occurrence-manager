@@ -62,7 +62,7 @@ public class OcorrenciaController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Atualiza uma ocorrência no sistema")
-    public ResponseEntity<OcorrenciaDTO> atualizarOcorrencia(@PathVariable Long id, @RequestBody OcorrenciaDTO ocorrenciaDTO) {
+    public ResponseEntity<OcorrenciaDTO> atualizarOcorrencia(@PathVariable Long id, @RequestBody @Valid OcorrenciaDTO ocorrenciaDTO) {
         OcorrenciaDTO ocorrenciaAtualizada = ocorrenciaService.atualizarOcorrencia(id, ocorrenciaDTO);
         return ResponseEntity.ok(ocorrenciaAtualizada);
     }

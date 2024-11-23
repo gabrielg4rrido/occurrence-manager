@@ -3,7 +3,6 @@ package com.gg.occurrence_manager.model.dto;
 import com.gg.occurrence_manager.model.Endereco;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 

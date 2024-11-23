@@ -5,6 +5,7 @@ import com.gg.occurrence_manager.model.dto.ClienteDTO;
 import com.gg.occurrence_manager.service.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,7 +42,7 @@ public class ClienteController {
 
     @PostMapping
     @Operation(summary = "Cadastra um cliente no sistema")
-    public ResponseEntity<Cliente> criarCliente(@RequestBody ClienteDTO clienteDTO) {
+    public ResponseEntity<Cliente> criarCliente(@RequestBody @Valid ClienteDTO clienteDTO) {
         ClienteDTO clienteCriado = clienteService.criarCliente(clienteDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(clienteCriado.codigo()).toUri();
 
@@ -50,7 +51,7 @@ public class ClienteController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Atualiza um cliente no sistema")
-    public ResponseEntity<ClienteDTO> atualizaarCliente(@PathVariable Long id, @RequestBody ClienteDTO clienteDTO) {
+    public ResponseEntity<ClienteDTO> atualizaarCliente(@PathVariable Long id, @RequestBody @Valid ClienteDTO clienteDTO) {
         ClienteDTO clienteAtualizado = clienteService.atualizarCliente(id, clienteDTO);
         return ResponseEntity.ok().body(clienteAtualizado);
     }
