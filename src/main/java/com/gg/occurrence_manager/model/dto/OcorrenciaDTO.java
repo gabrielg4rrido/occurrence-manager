@@ -6,7 +6,26 @@ import com.gg.occurrence_manager.model.enums.StatusOcorrencia;
 import java.time.LocalDate;
 import java.util.List;
 
-public record OcorrenciaDTO(Long codigo, EnderecoDTO endereco, ClienteDTO cliente, LocalDate dataOcorrencia, StatusOcorrencia statusOcorrencia, List<FotoOcorrenciaDTO> fotos) {
+import jakarta.validation.constraints.NotNull;
+
+public record OcorrenciaDTO(
+        Long codigo,
+
+        @NotNull(message = "O endereço é obrigatório")
+        EnderecoDTO endereco,
+
+        @NotNull(message = "O cliente é obrigatório")
+        ClienteDTO cliente,
+
+        @NotNull(message = "A data da ocorrência é obrigatória")
+        LocalDate dataOcorrencia,
+
+        @NotNull(message = "O status da ocorrência é obrigatório")
+        StatusOcorrencia statusOcorrencia,
+
+        @NotNull(message = "As fotos são obrigatórias")
+        List<FotoOcorrenciaDTO> fotos
+) {
     public OcorrenciaDTO(Ocorrencia ocorrencia) {
         this(
                 ocorrencia.getCodigo(),

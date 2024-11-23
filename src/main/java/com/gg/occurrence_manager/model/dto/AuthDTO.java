@@ -1,3 +1,11 @@
 package com.gg.occurrence_manager.model.dto;
 
-public record AuthDTO(String login, String password) {}
+import jakarta.validation.constraints.NotEmpty;
+
+public record AuthDTO(
+        @NotEmpty(message = "O login é obrigatório")
+        String login,
+
+        @NotEmpty(message = "A senha é obrigatória")
+        String password
+) {}

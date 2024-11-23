@@ -3,6 +3,7 @@ package com.gg.occurrence_manager.controller;
 import com.gg.occurrence_manager.model.dto.CadastroOcorrenciaDTO;
 import com.gg.occurrence_manager.model.dto.OcorrenciaDTO;
 import com.gg.occurrence_manager.service.OcorrenciaService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class OcorrenciaController {
     private OcorrenciaService ocorrenciaService;
 
     @GetMapping
+    @Operation(summary = "Lista todos as ocorrências")
     public ResponseEntity<Page<OcorrenciaDTO>> listarOcorrencias(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -43,12 +45,14 @@ public class OcorrenciaController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Obtém uma ocorrência")
     public ResponseEntity<OcorrenciaDTO> obterOcorrencia(@PathVariable Long id) {
         OcorrenciaDTO ocorrencia = ocorrenciaService.obterOcorrencia(id);
         return ResponseEntity.ok(ocorrencia);
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Cadastra uma ocorrência no sistema")
     public ResponseEntity<OcorrenciaDTO> criarOcorrencia(
             @RequestPart("dados") @Valid CadastroOcorrenciaDTO cadastroOcorrenciaDTO,
             @RequestPart("evidencias") List<MultipartFile> evidencias) {
@@ -57,18 +61,21 @@ public class OcorrenciaController {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Atualiza uma ocorrência no sistema")
     public ResponseEntity<OcorrenciaDTO> atualizarOcorrencia(@PathVariable Long id, @RequestBody OcorrenciaDTO ocorrenciaDTO) {
         OcorrenciaDTO ocorrenciaAtualizada = ocorrenciaService.atualizarOcorrencia(id, ocorrenciaDTO);
         return ResponseEntity.ok(ocorrenciaAtualizada);
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Deleta uma ocorrência do sistema")
     public ResponseEntity<Void> deletarOcorrencia(@PathVariable Long id) {
         ocorrenciaService.deletarOcorrencia(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}/finalizar")
+    @Operation(summary = "Finaliza uma ocorrência no sistema")
     public ResponseEntity<OcorrenciaDTO> finalizarOcorrencia(@PathVariable Long id) {
         OcorrenciaDTO ocorrenciaFinalizada = ocorrenciaService.finalizarOcorrencia(id);
         return ResponseEntity.ok(ocorrenciaFinalizada);

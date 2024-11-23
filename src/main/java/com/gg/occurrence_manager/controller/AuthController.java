@@ -6,6 +6,7 @@ import com.gg.occurrence_manager.model.dto.AuthDTO;
 import com.gg.occurrence_manager.model.dto.LoginResponseDTO;
 import com.gg.occurrence_manager.model.dto.RegisterDTO;
 import com.gg.occurrence_manager.repository.UsuarioRepository;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,7 @@ public class AuthController {
     private TokenService tokenService;
 
     @PostMapping("/login")
+    @Operation(summary = "Realiza o login do usuário no sistema")
     public ResponseEntity login(@RequestBody @Valid AuthDTO authDTO) {
         var usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(authDTO.login(), authDTO.password());
         var auth = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
@@ -40,6 +42,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
+    @Operation(summary = "Cadastra um usuário no sistema")
     public ResponseEntity register(@RequestBody @Valid RegisterDTO registerDTO) {
         if (this.usuarioRepository.findByLogin(registerDTO.login()) != null) {
             return ResponseEntity.badRequest().build();
