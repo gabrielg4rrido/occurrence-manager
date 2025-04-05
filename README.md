@@ -1,6 +1,6 @@
 # OccurrenceManager
 
-FileManager é uma aplicação  para gerenciar ocorrências. A aplicação utiliza basicamente Spring Boot.
+Occurrence Manager é uma aplicação  para gerenciar ocorrências. A aplicação utiliza basicamente Spring Boot.
 
 ## Tecnologias Utilizadas
 
